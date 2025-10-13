@@ -1,6 +1,7 @@
 # CSI5347 Semester Project
 
 Author: Kevin Fritz
+
 Title: Molding@Home
 
 ## Project Summary
