@@ -1,0 +1,44 @@
+package molding.assignment.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import molding.assignment.model.Assignment;
+import molding.assignment.service.AssignmentService;
+
+@RestController
+@RequestMapping(value="/assignment")
+public class AssignmentController {
+
+    @Autowired
+    private AssignmentService assignmentService;
+
+    @RequestMapping(value="/{assignmentId}",method = RequestMethod.GET)
+    public ResponseEntity<Assignment> getAssignment(@PathVariable("assignmentId") long assignmentId) {
+        return ResponseEntity.ok(assignmentService.getAssignment(assignmentId));
+    }
+
+    @PutMapping
+    public ResponseEntity<Assignment> updateAssignment(@RequestBody Assignment request) {
+        return ResponseEntity.ok(assignmentService.updateAssignment(request));
+    }
+
+    @PostMapping
+    public ResponseEntity<Assignment> createAssignment(@RequestBody Assignment request) {
+        return ResponseEntity.ok(assignmentService.createAssignment(request));
+    }
+
+    @DeleteMapping(value="/{assignmentId}")
+    public ResponseEntity<String> deleteAssignment(@PathVariable("assignmentId") Long assignmentId) {
+        return ResponseEntity.ok(assignmentService.deleteAssignment(assignmentId));
+    }
+
+}

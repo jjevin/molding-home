@@ -1,0 +1,51 @@
+services:
+  work-db:
+    image: postgres:latest
+    container_name: work-db
+    restart: always
+    environment:
+      POSTGRES_DB: workdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    expose:
+      - "5432"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/1-init.sql
+    networks:
+      - backend
+
+  work-service:
+    build: .
+    container_name: work-service
+    restart: always
+    depends_on:
+      - work-db
+      - work-configserver
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://work-db:5432/workdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      CONFIGSERVER_URI: http://configserver:8071
+      SPRING_PROFILES_ACTIVE: dev
+    networks:
+      - backend
+
+  work-configserver:
+    build: ../ConfigService/
+    container_name: work-configserver
+    ports:
+      - "8071:8071"   # only needed if you want to test configserver from host
+    environment:
+      SPRING_PROFILES_ACTIVE: native
+    networks:
+      - backend
+
+
+networks:
+  backend:
+    driver: bridge
+
+
+

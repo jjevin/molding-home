@@ -1,0 +1,5 @@
+*.sh
+AssignmentService/target/*
+ClientService/target/*
+ConfigService/target/*
+WorkService/target/*
