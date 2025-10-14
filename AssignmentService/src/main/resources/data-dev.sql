@@ -1,1 +1,1 @@
-INSERT INTO public.Assignments VALUES (0, 1, 1);
+INSERT INTO public.Assignments (client_id, frame_id)VALUES (1, 1);
