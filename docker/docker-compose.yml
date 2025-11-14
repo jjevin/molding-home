@@ -1,0 +1,208 @@
+services:
+  assignment-db:
+    image: postgres:latest
+    container_name: assignment-db
+    restart: always
+    environment:
+      POSTGRES_DB: assignmentdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    expose:
+      - "5432"
+    volumes:
+      - ./assignment-init.sql:/docker-entrypoint-initdb.d/1-init.sql
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  assignment-service:
+    build: ../AssignmentService/
+    container_name: assignment-service
+    restart: always
+    depends_on:
+      assignment-db:
+        condition: service_healthy
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_started
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_APPLICATION_NAME: assignment-service
+      SPRING_DATASOURCE_URL: jdbc:postgresql://assignment-db:5432/assignmentdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_CONFIG_IMPORT: optional:configserver:http://configserver:8071/
+      CONFIGSERVER_URI: "http://configserver:8071"
+      EUREKASERVER_URI: "http://eurekaserver:8070/eureka/"
+      EUREKASERVER_PORT: "8070"
+      # SPRING_PROFILES_ACTIVE: dev
+    networks:
+      - backend
+
+  client-db:
+    image: postgres:latest
+    container_name: client-db
+    restart: always
+    environment:
+      POSTGRES_DB: clientdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    expose:
+      - "5432"
+    volumes:
+      - ./client-init.sql:/docker-entrypoint-initdb.d/1-init.sql
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  client-service:
+    build: ../ClientService/
+    container_name: client-service
+    restart: always
+    depends_on:
+      client-db:
+        condition: service_healthy
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_started
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_APPLICATION_NAME: client-service
+      SPRING_DATASOURCE_URL: jdbc:postgresql://client-db:5432/clientdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_CONFIG_IMPORT: optional:configserver:http://configserver:8071/
+      CONFIGSERVER_URI: "http://configserver:8071"
+      EUREKASERVER_URI: "http://eurekaserver:8070/eureka/"
+      EUREKASERVER_PORT: "8070"
+      # SPRING_PROFILES_ACTIVE: dev
+    networks:
+      - backend
+
+  work-db:
+    image: postgres:latest
+    container_name: work-db
+    restart: always
+    environment:
+      POSTGRES_DB: workdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    expose:
+      - "5432"
+    volumes:
+      - ./work-init.sql:/docker-entrypoint-initdb.d/1-init.sql
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  work-service:
+    build: ../WorkService/
+    container_name: work-service
+    restart: always
+    depends_on:
+      work-db:
+        condition: service_healthy
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_started
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_APPLICATION_NAME: work-service
+      SPRING_DATASOURCE_URL: jdbc:postgresql://work-db:5432/workdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_CONFIG_IMPORT: optional:configserver:http://configserver:8071
+      CONFIGSERVER_URI: "http://configserver:8071"
+      EUREKASERVER_URI: "http://eurekaserver:8070/eureka/"
+      EUREKASERVER_PORT: "8070"
+      # SPRING_PROFILES_ACTIVE: dev
+    networks:
+      - backend
+
+  configserver:
+    build: ../ConfigService/
+    container_name: configserver
+    ports:
+      - "8071:8071"
+    environment:
+      SPRING_PROFILES_ACTIVE: native
+      SERVER_PORT: 8071
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://configserver:8071/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - backend
+
+  eurekaserver:
+    build: ../EurekaService/
+    container_name: eurekaserver
+    ports:
+      - "8070:8070"
+    environment:
+      SPRING_APPLICATION_NAME: eureka-server
+      SPRING_CONFIG_IMPORT: optional:configserver:http://configserver:8071
+      CONFIGSERVER_URI: "http://configserver:8071"
+    depends_on:
+      assignment-db:
+        condition: service_healthy
+      client-db:
+        condition: service_healthy
+      work-db:
+        condition: service_healthy
+      configserver:
+        condition: service_healthy  
+        # condition: service_started  
+    networks:
+      - backend
+
+  gatewayserver:
+    build: ../GatewayServer/
+    container_name: gatewayserver
+    ports:
+      - "8072:8072"
+    environment:
+      PROFILE: "default"
+      SERVER_PORT: "8072"
+      CONFIGSERVER_URI: "http://configserver:8071"
+      EUREKASERVER_URI: "http://eurekaserver:8070/eureka/"
+      EUREKASERVER_PORT: "8070"
+      CONFIGSERVER_PORT: "8071"
+    depends_on:
+      assignment-db:
+        condition: service_healthy
+      client-db:
+        condition: service_healthy
+      work-db:
+        condition: service_healthy
+      configserver:
+        condition: service_started
+      eurekaserver:
+        condition: service_started
+    networks:
+      - backend
+
+
+networks:
+  backend:
+    driver: bridge
+
