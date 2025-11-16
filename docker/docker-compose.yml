@@ -31,7 +31,7 @@ services:
       eurekaserver:
         condition: service_started
     ports:
-      - "8080:8080"
+      - "8081:8081"
     environment:
       SPRING_APPLICATION_NAME: assignment-service
       SPRING_DATASOURCE_URL: jdbc:postgresql://assignment-db:5432/assignmentdb
@@ -77,7 +77,7 @@ services:
       eurekaserver:
         condition: service_started
     ports:
-      - "8081:8081"
+      - "8082:8082"
     environment:
       SPRING_APPLICATION_NAME: client-service
       SPRING_DATASOURCE_URL: jdbc:postgresql://client-db:5432/clientdb
@@ -123,7 +123,7 @@ services:
       eurekaserver:
         condition: service_started
     ports:
-      - "8082:8082"
+      - "8083:8083"
     environment:
       SPRING_APPLICATION_NAME: work-service
       SPRING_DATASOURCE_URL: jdbc:postgresql://work-db:5432/workdb
@@ -200,6 +200,24 @@ services:
         condition: service_started
     networks:
       - backend
+
+  keycloak:
+    image: quay.io/keycloak/keycloak
+    restart: always
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_IMPORT: /opt/keycloak/data/import/realm-export.json
+    volumes:
+      - ./realm-export.json:/opt/keycloak/data/import/realm-export.json
+    command: ["start-dev", "--import-realm", "--http-port", "8080", "--https-port", "8080"]
+    ports:
+      - "8080:8080"
+    networks:
+      backend:
+        aliases:
+          - "keycloak"
+
 
 
 networks:
