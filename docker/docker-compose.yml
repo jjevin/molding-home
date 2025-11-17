@@ -207,7 +207,7 @@ services:
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
-      KC_IMPORT: /opt/keycloak/data/import/realm-export.json
+      # KC_IMPORT: /opt/keycloak/data/import/realm-export.json
     volumes:
       - ./realm-export.json:/opt/keycloak/data/import/realm-export.json
     command: ["start-dev", "--import-realm", "--http-port", "8080", "--https-port", "8080"]
@@ -223,4 +223,3 @@ services:
 networks:
   backend:
     driver: bridge
-

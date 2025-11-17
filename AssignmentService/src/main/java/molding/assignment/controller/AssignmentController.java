@@ -1,5 +1,8 @@
 package molding.assignment.controller;
 
+import java.util.List;
+import java.util.concurrent.TimeoutException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import molding.assignment.model.Assignment;
 import molding.assignment.service.AssignmentService;
 
+// import jakarta.annotation.security.RolesAllowed;
+
 @RestController
+// TODO: Nest multiple endpoints?
 @RequestMapping(value="/assignment")
 public class AssignmentController {
 
@@ -24,6 +30,21 @@ public class AssignmentController {
     @RequestMapping(value="/{assignmentId}",method = RequestMethod.GET)
     public ResponseEntity<Assignment> getAssignment(@PathVariable("assignmentId") long assignmentId) {
         return ResponseEntity.ok(assignmentService.getAssignment(assignmentId));
+    }
+
+    // @RequestMapping(value="/{assignmentId}/{clientId}", method = RequestMethod.GET)
+    // public ResponseEntity<Assignment> getAssignmentWithClient(@PathVariable("assignmentId") long assignmentId,
+    //         @PathVariable("clientId") long clientId) {
+    //    
+    //     return ResponseEntity.ok(assignmentService.getAssignmentWithClient(assignmentId, clientId));
+
+    // }
+
+    @RequestMapping(value="/client/{clientId}", method = RequestMethod.GET)
+    public ResponseEntity<List<Assignment>> getAssignmentsByClient(@PathVariable("clientId") long clientId) throws TimeoutException {
+       
+        return ResponseEntity.ok(assignmentService.getAssignmentsByClient(clientId));
+
     }
 
     @PutMapping
@@ -36,6 +57,9 @@ public class AssignmentController {
         return ResponseEntity.ok(assignmentService.createAssignment(request));
     }
 
+    // TODO: Change to realm- or molding-admin?
+    // TODO: Is this only needed for called services / not caller?
+    // @RolesAllowed("Admin")
     @DeleteMapping(value="/{assignmentId}")
     public ResponseEntity<String> deleteAssignment(@PathVariable("assignmentId") Long assignmentId) {
         return ResponseEntity.ok(assignmentService.deleteAssignment(assignmentId));
