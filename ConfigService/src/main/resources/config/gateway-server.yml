@@ -16,43 +16,43 @@ eureka:
 spring:
   cloud:
     loadbalancer.ribbon.enabled: false
-    gateway.server.webflux.discovery.locator:
-      enabled: true
-      lower-case-service-id: true
-      # routes:
-      # - id: assignment-service
-      #   uri: lb://assignment-service
-      #   predicates:
-      #   - Path=/assignment/**
-      #   filters:
-      #   - RewritePath=/assignment/(?<path>.*), /$\{path}
-      #   - RemoveRequestHeader= Cookie,Set-Cookie
-      # - id: client-service
-      #   uri: lb://client-service
-      #   predicates:
-      #   - Path=/client/**
-      #   filters:
-      #   - RewritePath=/client/(?<path>.*), /$\{path}
-      #   - RemoveRequestHeader= Cookie,Set-Cookie
-      # - id: work-service
-      #   uri: lb://work-service
-      #   predicates:
-      #   - Path=/work/**
-      #   filters:
-      #   - RewritePath=/work/(?<path>.*), /$\{path}
-      #   - RemoveRequestHeader= Cookie,Set-Cookie
+    # gateway.server.webflux.discovery.locator:
+    #   enabled: true
+    #   lower-case-service-id: true
+    gateway:
+      routes:
+      - id: assignment-service
+        uri: lb://assignment-service
+        predicates:
+        - Path=/assignment/**
+        filters:
+        - RewritePath=/assignment/(?<path>.*), /$\{path}
+        - RemoveRequestHeader= Cookie,Set-Cookie
+      - id: client-service
+        uri: lb://client-service
+        predicates:
+        - Path=/client/**
+        filters:
+        - RewritePath=/client/(?<path>.*), /$\{path}
+        - RemoveRequestHeader= Cookie,Set-Cookie
+      - id: work-service
+        uri: lb://work-service
+        predicates:
+        - Path=/work/**
+        filters:
+        - RewritePath=/work/(?<path>.*), /$\{path}
+        - RemoveRequestHeader= Cookie,Set-Cookie
 
 
-# TODO: After getting to keycloak
-# keycloak:
-#     auth-server-url: http://localhost:8080/auth
-#     bearer-only: true
-#     credentials:
-#         secret: 5988f899-a5bf-4f76-b15f-f1cd0d2c81ba
-#     realm: spmia-realm
-#     resource: ostock
-#     ssl-required: external
-#     use-resource-role-mappings: true    
+keycloak:
+    auth-server-url: http://localhost:8080/auth
+    bearer-only: true
+    credentials:
+        secret: Vvwte4acDtYxkxp2gAKjr9zfD7maaXsj
+    realm: molding
+    resource: molding
+    ssl-required: external
+    use-resource-role-mappings: true    
     
 management:
   endpoints:

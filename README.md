@@ -28,3 +28,9 @@ docker compose up
 
 This parent directory has Postman tests for each service. 
 Because each service is run individually, only run the series of tests corresponding to the running service.
+
+
+to register a user: http://keycloak:8080/realms/molding
+
+- This is necessary, since importing / exporting users is not supported in the latest version of keycloak (to my knowledge)
+- Create a user with username "user" and admin with username "admin", both with passwords "pass" for default endpoint testing

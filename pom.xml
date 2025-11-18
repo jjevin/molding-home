@@ -18,7 +18,7 @@
     </parent>
 
     <properties>
-        <docker.image.prefix>ostock</docker.image.prefix>
+        <docker.image.prefix>molding</docker.image.prefix>
     </properties>
     <modules>
         <module>AssignmentService</module>

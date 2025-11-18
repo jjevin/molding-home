@@ -187,6 +187,8 @@ services:
       EUREKASERVER_URI: "http://eurekaserver:8070/eureka/"
       EUREKASERVER_PORT: "8070"
       CONFIGSERVER_PORT: "8071"
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: "http://keycloak:8080/realms/molding"
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: "http://keycloak:8080/realms/molding/protocol/openid-connect/certs"
     depends_on:
       assignment-db:
         condition: service_healthy
@@ -197,6 +199,8 @@ services:
       configserver:
         condition: service_started
       eurekaserver:
+        condition: service_started
+      keycloak:
         condition: service_started
     networks:
       - backend
