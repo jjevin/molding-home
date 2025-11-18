@@ -11,8 +11,89 @@
 			"name": "Assignments",
 			"item": [
 				{
+					"name": "Get Bearer Token Assignment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.globals.set(\"token\", pm.response.json().access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "**********",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "molding",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "molding-user",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "pass",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://keycloak:8080/realms/molding/protocol/openid-connect/token",
+							"protocol": "http",
+							"host": [
+								"keycloak"
+							],
+							"port": "8080",
+							"path": [
+								"realms",
+								"molding",
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "PostAssignment",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -25,13 +106,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/assignment",
+							"raw": "http://localhost:8072/assignment-service/assignment",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8072",
 							"path": [
+								"assignment-service",
 								"assignment"
 							]
 						}
@@ -41,16 +123,27 @@
 				{
 					"name": "GetAssignment",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/assignment/1",
+							"raw": "http://localhost:8072/assignment-service/assignment/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8072",
 							"path": [
+								"assignment-service",
 								"assignment",
 								"1"
 							]
@@ -61,6 +154,16 @@
 				{
 					"name": "UpdateAssignment",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
@@ -73,14 +176,47 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/assignment",
+							"raw": "http://localhost:8072/assignment-service/assignment",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8072",
 							"path": [
+								"assignment-service",
 								"assignment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAssignmentsByClient",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8072/assignment-service/assignment/client/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8072",
+							"path": [
+								"assignment-service",
+								"assignment",
+								"client",
+								"1"
 							]
 						}
 					},
@@ -89,16 +225,27 @@
 				{
 					"name": "DeleteAssignment",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/assignment/1",
+							"raw": "http://localhost:8072/assignment-service/assignment/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8072",
 							"path": [
+								"assignment-service",
 								"assignment",
 								"1"
 							]
@@ -112,8 +259,89 @@
 			"name": "Clients",
 			"item": [
 				{
+					"name": "Get Bearer Token Client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.globals.set(\"token\", pm.response.json().access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "**********",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "molding",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "molding-user",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "pass",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://keycloak:8080/realms/molding/protocol/openid-connect/token",
+							"protocol": "http",
+							"host": [
+								"keycloak"
+							],
+							"port": "8080",
+							"path": [
+								"realms",
+								"molding",
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "PostClient",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -126,13 +354,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/client",
+							"raw": "http://localhost:8072/client-service/client",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8072",
 							"path": [
+								"client-service",
 								"client"
 							]
 						}
@@ -142,16 +371,27 @@
 				{
 					"name": "GetClient",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/client/1",
+							"raw": "http://localhost:8072/client-service/client/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8072",
 							"path": [
+								"client-service",
 								"client",
 								"1"
 							]
@@ -162,6 +402,16 @@
 				{
 					"name": "UpdateClient",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
@@ -174,13 +424,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/client",
+							"raw": "http://localhost:8072/client-service/client",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8072",
 							"path": [
+								"client-service",
 								"client"
 							]
 						}
@@ -190,16 +441,27 @@
 				{
 					"name": "DeleteClient",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/client/1",
+							"raw": "http://localhost:8072/client-service/client/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8072",
 							"path": [
+								"client-service",
 								"client",
 								"1"
 							]
@@ -213,8 +475,89 @@
 			"name": "WorkUnits",
 			"item": [
 				{
+					"name": "Get Bearer Token Work",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.globals.set(\"token\", pm.response.json().access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "**********",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "molding",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "molding-user",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "pass",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://keycloak:8080/realms/molding/protocol/openid-connect/token",
+							"protocol": "http",
+							"host": [
+								"keycloak"
+							],
+							"port": "8080",
+							"path": [
+								"realms",
+								"molding",
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "PostProblem",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -227,13 +570,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/problem",
+							"raw": "http://localhost:8072/work-service/problem",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8072",
 							"path": [
+								"work-service",
 								"problem"
 							]
 						}
@@ -243,6 +587,16 @@
 				{
 					"name": "PostFrame",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -255,13 +609,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/frame",
+							"raw": "http://localhost:8072/work-service/frame",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8072",
 							"path": [
+								"work-service",
 								"frame"
 							]
 						}
@@ -271,6 +626,16 @@
 				{
 					"name": "PostParticle",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -283,13 +648,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/particle",
+							"raw": "http://localhost:8072/work-service/particle",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8072",
 							"path": [
+								"work-service",
 								"particle"
 							]
 						}
@@ -299,16 +665,27 @@
 				{
 					"name": "GetProblem",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/problem/1",
+							"raw": "http://localhost:8072/work-service/problem/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8072",
 							"path": [
+								"work-service",
 								"problem",
 								"1"
 							]
@@ -319,16 +696,27 @@
 				{
 					"name": "GetFrame",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/frame/1",
+							"raw": "http://localhost:8072/work-service/frame/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8072",
 							"path": [
+								"work-service",
 								"frame",
 								"1"
 							]
@@ -339,16 +727,27 @@
 				{
 					"name": "GetParticle",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/particle/1",
+							"raw": "http://localhost:8072/work-service/particle/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8072",
 							"path": [
+								"work-service",
 								"particle",
 								"1"
 							]
@@ -359,6 +758,16 @@
 				{
 					"name": "UpdateParticle",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
@@ -371,13 +780,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/particle",
+							"raw": "http://localhost:8072/work-service/particle",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8072",
 							"path": [
+								"work-service",
 								"particle"
 							]
 						}
@@ -387,6 +797,16 @@
 				{
 					"name": "UpdateFrame",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
@@ -399,13 +819,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/frame",
+							"raw": "http://localhost:8072/work-service/frame",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8072",
 							"path": [
+								"work-service",
 								"frame"
 							]
 						}
@@ -415,6 +836,16 @@
 				{
 					"name": "UpdateProblem",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
@@ -427,13 +858,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/problem",
+							"raw": "http://localhost:8072/work-service/problem",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8072",
 							"path": [
+								"work-service",
 								"problem"
 							]
 						}
@@ -443,16 +875,27 @@
 				{
 					"name": "DeleteProblem",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/problem/1",
+							"raw": "http://localhost:8072/work-service/problem/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8072",
 							"path": [
+								"work-service",
 								"problem",
 								"1"
 							]
@@ -463,16 +906,27 @@
 				{
 					"name": "DeleteFrame",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/frame/1",
+							"raw": "http://localhost:8072/work-service/frame/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8072",
 							"path": [
+								"work-service",
 								"frame",
 								"1"
 							]
@@ -483,16 +937,27 @@
 				{
 					"name": "DeleteParticle",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/frame/1",
+							"raw": "http://localhost:8072/work-service/frame/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8072",
 							"path": [
+								"work-service",
 								"frame",
 								"1"
 							]
@@ -501,6 +966,27 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Get Routes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8072/actuator/gateway/routes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8072",
+					"path": [
+						"actuator",
+						"gateway",
+						"routes"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

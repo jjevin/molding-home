@@ -15,8 +15,7 @@ A microservice project inspired by "Folding@Home". Comprised of the following se
 
 ## Deployment
 
-Each directory represents a service meant to be run independently, excluding ConfigService (which is used by each other service).
-To run a service, navigate to that service's directory and run the following commands:
+To run the collection of services, run the following commands:
 
 ```bash
 mvn clean package
@@ -24,13 +23,17 @@ docker compose build --no-cache
 docker compose up
 ```
 
+We are using automated mapping of routes, so it might take a while for all mappings to be created.
+Check the "Get Routes" test in postman to confirm mappings are created.
+
+## User Registration
+
+To register a user, visit [this page](http://keycloak:8080/realms/molding/account).
+
+- This is necessary, since importing / exporting users is not supported in the latest version of keycloak (to my knowledge).
+- Create a user with username "molding-user" with the password "pass" for default endpoint testing.
+
 ## Endpoint Testing
 
 This parent directory has Postman tests for each service. 
-Because each service is run individually, only run the series of tests corresponding to the running service.
 
-
-to register a user: http://keycloak:8080/realms/molding
-
-- This is necessary, since importing / exporting users is not supported in the latest version of keycloak (to my knowledge)
-- Create a user with username "user" and admin with username "admin", both with passwords "pass" for default endpoint testing

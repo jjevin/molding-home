@@ -9,8 +9,6 @@ import molding.assignment.model.Assignment;
 
 @Repository
 public interface AssignmentRepository extends CrudRepository<Assignment,Long>  {
-    // public List<Assignment> findByOrganizationId(String organizationId);
-    // public Assignment findByOrganizationIdAndLicenseId(String organizationId,String licenseId);
     public List<Assignment> findByClientId(Long clientId);
 }
 

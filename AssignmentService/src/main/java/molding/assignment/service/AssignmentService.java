@@ -23,11 +23,7 @@ import molding.assignment.utils.UserContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.bulkhead.annotation.Bulkhead.Type;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
-import io.github.resilience4j.retry.annotation.Retry;
  
 @Service
 public class AssignmentService {
@@ -37,15 +33,6 @@ public class AssignmentService {
 
 	@Autowired
 	ServiceConfig config;
-    
-	// @Autowired
-	// OrganizationFeignClient organizationFeignClient;
-
-	// @Autowired
-	// OrganizationRestTemplateClient organizationRestClient;
-
-	// @Autowired
-	// OrganizationDiscoveryClient organizationDiscoveryClient;
 
 	private static final Logger logger = LoggerFactory.getLogger(AssignmentService.class);
 
@@ -88,21 +75,26 @@ public class AssignmentService {
     }
 
     @SuppressWarnings("unused")
-    private List<Assignment> buildFallbackAssignmentList(String clientId, Throwable t){
+    private List<Assignment> buildFallbackAssignmentList(Long clientId, Throwable t){
         List<Assignment> fallbackList = new ArrayList<>();
-        Assignment license = new Assignment();
-        fallbackList.add(license);
+        Assignment assignment = new Assignment();
+        assignment.setClientId(clientId);
+        assignment.setFrameId(1L);
+        assignment.setAssignmentTime(LocalDateTime.now());
+        fallbackList.add(assignment);
         return fallbackList;
     }
 
-    private void randomlyRunLong(){
+    private void randomlyRunLong() throws TimeoutException {
         Random rand = new Random();
         int randomNum = rand.nextInt((3 - 1) + 1) + 1;
         if (randomNum==3) sleep();
     }
-    private void sleep(){
+    private void sleep() throws TimeoutException {
         try {
-            Thread.sleep(11000);
+            System.out.println("Sleep");
+            Thread.sleep(5000);
+            throw new java.util.concurrent.TimeoutException();
         } catch (InterruptedException e) {
             logger.error(e.getMessage());
         }

@@ -16,32 +16,32 @@ eureka:
 spring:
   cloud:
     loadbalancer.ribbon.enabled: false
-    # gateway.server.webflux.discovery.locator:
-    #   enabled: true
-    #   lower-case-service-id: true
-    gateway:
-      routes:
-      - id: assignment-service
-        uri: lb://assignment-service
-        predicates:
-        - Path=/assignment/**
-        filters:
-        - RewritePath=/assignment/(?<path>.*), /$\{path}
-        - RemoveRequestHeader= Cookie,Set-Cookie
-      - id: client-service
-        uri: lb://client-service
-        predicates:
-        - Path=/client/**
-        filters:
-        - RewritePath=/client/(?<path>.*), /$\{path}
-        - RemoveRequestHeader= Cookie,Set-Cookie
-      - id: work-service
-        uri: lb://work-service
-        predicates:
-        - Path=/work/**
-        filters:
-        - RewritePath=/work/(?<path>.*), /$\{path}
-        - RemoveRequestHeader= Cookie,Set-Cookie
+    gateway.server.webflux.discovery.locator:
+      enabled: true
+      lower-case-service-id: true
+    # gateway:
+    #   routes:
+    #   - id: assignment-service
+    #     uri: lb://assignment-service
+    #     predicates:
+    #     - Path=/assignment/**
+    #     filters:
+    #     - RewritePath=/assignment/(?<path>.*), /$\{path}
+    #     - RemoveRequestHeader= Cookie,Set-Cookie
+    #   - id: client-service
+    #     uri: lb://client-service
+    #     predicates:
+    #     - Path=/client/**
+    #     filters:
+    #     - RewritePath=/client/(?<path>.*), /$\{path}
+    #     - RemoveRequestHeader= Cookie,Set-Cookie
+    #   - id: work-service
+    #     uri: lb://work-service
+    #     predicates:
+    #     - Path=/work/**
+    #     filters:
+    #     - RewritePath=/work/(?<path>.*), /$\{path}
+    #     - RemoveRequestHeader= Cookie,Set-Cookie
 
 
 keycloak:
