@@ -48,8 +48,8 @@ public class AssignmentService {
    
     public Assignment createAssignment(Assignment assignment) {
         assignment.setAssignmentTime(LocalDateTime.now());
-        assignmentRepository.save(assignment);
-        simpleSourceBean.publishAssignmentChange("SAVE", Long.toString(assignment.getAssignmentId()));
+        Assignment assignmentEntity = assignmentRepository.save(assignment);
+        simpleSourceBean.publishAssignmentChange("SAVE", Long.toString(assignmentEntity.getAssignmentId()));
         return assignment;
     }
     
@@ -58,6 +58,7 @@ public class AssignmentService {
         assignmentDTO.setClientId(assignment.getClientId());
         assignmentDTO.setFrameId(assignment.getFrameId());
         assignmentDTO.setAssignmentTime(LocalDateTime.now());
+        simpleSourceBean.publishAssignmentChange("UPDATE", Long.toString(assignmentDTO.getAssignmentId()));
         assignmentRepository.save(assignmentDTO);
         return assignmentDTO;
     }
@@ -97,6 +98,7 @@ public class AssignmentService {
         int randomNum = rand.nextInt((3 - 1) + 1) + 1;
         if (randomNum==3) sleep();
     }
+
     private void sleep() throws TimeoutException {
         try {
             System.out.println("Sleep");

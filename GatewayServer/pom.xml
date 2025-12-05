@@ -68,12 +68,16 @@
 			<scope>test</scope>
 		</dependency>
 
-        <!-- Add this explicitly (safe even if transitively present) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>6.3</version>
+        </dependency>
 
 	</dependencies>
 

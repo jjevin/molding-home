@@ -15,7 +15,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name="assignments")
-@Getter @Setter
+// @Getter @Setter
 public class Assignment extends RepresentationModel<Assignment> {
 
     @Id
@@ -28,5 +28,30 @@ public class Assignment extends RepresentationModel<Assignment> {
     private Long frameId;
     @Column(name = "assignment_time", nullable = false)
     private LocalDateTime assignmentTime;
+
+	public Long getAssignmentId() {
+		return assignmentId;
+	}
+	public void setAssignmentId(Long assignmentId) {
+		this.assignmentId = assignmentId;
+	}
+	public Long getClientId() {
+		return clientId;
+	}
+	public void setClientId(Long clientId) {
+		this.clientId = clientId;
+	}
+	public Long getFrameId() {
+		return frameId;
+	}
+	public void setFrameId(Long frameId) {
+		this.frameId = frameId;
+	}
+	public LocalDateTime getAssignmentTime() {
+		return assignmentTime;
+	}
+	public void setAssignmentTime(LocalDateTime assignmentTime) {
+		this.assignmentTime = assignmentTime;
+	}
 
 }
