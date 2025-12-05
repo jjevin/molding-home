@@ -19,6 +19,7 @@ import molding.assignment.config.ServiceConfig;
 import molding.assignment.model.Assignment;
 import molding.assignment.repository.AssignmentRepository;
 import molding.assignment.utils.UserContextHolder;
+import molding.assignment.events.source.SimpleSourceBean;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,17 +34,22 @@ public class AssignmentService {
 
 	@Autowired
 	ServiceConfig config;
+        
+    @Autowired
+    SimpleSourceBean simpleSourceBean;
 
 	private static final Logger logger = LoggerFactory.getLogger(AssignmentService.class);
 
     public Assignment getAssignment(Long assignmentId) {
         Optional<Assignment> assignment = assignmentRepository.findById(assignmentId);
+        simpleSourceBean.publishAssignmentChange("GET", Long.toString(assignmentId));
         return assignment.get(); // Throws NoSuchElementException if invalid id
     }
    
     public Assignment createAssignment(Assignment assignment) {
         assignment.setAssignmentTime(LocalDateTime.now());
         assignmentRepository.save(assignment);
+        simpleSourceBean.publishAssignmentChange("SAVE", Long.toString(assignment.getAssignmentId()));
         return assignment;
     }
     
@@ -60,6 +66,7 @@ public class AssignmentService {
         Assignment assignment = new Assignment();
         assignment.setAssignmentId(assignmentId);
         assignmentRepository.delete(assignment);
+        simpleSourceBean.publishAssignmentChange("DELETE", Long.toString(assignmentId));
         return "Assignment ID " + assignmentId + " successfully deleted";
     }
 
@@ -70,7 +77,6 @@ public class AssignmentService {
     public List<Assignment> getAssignmentsByClient(Long clientId) throws TimeoutException {
 		logger.debug("getAssignmentsByClient Correlation id: {}",
 				UserContextHolder.getContext().getCorrelationId());
-		// randomlyRunLong();
 		return assignmentRepository.findByClientId(clientId);
     }
 
@@ -85,6 +91,7 @@ public class AssignmentService {
         return fallbackList;
     }
 
+    @SuppressWarnings("unused")
     private void randomlyRunLong() throws TimeoutException {
         Random rand = new Random();
         int randomNum = rand.nextInt((3 - 1) + 1) + 1;
