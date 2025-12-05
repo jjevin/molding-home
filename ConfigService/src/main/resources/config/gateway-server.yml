@@ -61,16 +61,6 @@ logging:
   pattern:
     level: "%5p [${spring.application.name:},traceId=%X{traceId:-},spanId=%X{spanId:-}]"
 
-keycloak:
-    auth-server-url: http://localhost:8080/auth
-    bearer-only: true
-    credentials:
-        secret: Vvwte4acDtYxkxp2gAKjr9zfD7maaXsj
-    realm: molding
-    resource: molding
-    ssl-required: external
-    use-resource-role-mappings: true    
-    
 management:
   endpoints:
     web:
