@@ -43,6 +43,23 @@ spring:
     #     - RewritePath=/work/(?<path>.*), /$\{path}
     #     - RemoveRequestHeader= Cookie,Set-Cookie
 
+management:
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://zipkin:9411/api/v2/spans
+
+# logging:
+#   pattern:
+#     level: "%5p [${spring.application.name},%X{traceId:-},%X{spanId:-}]"
+#   include-application-name: false
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},traceId=%X{traceId:-},spanId=%X{spanId:-}]"
 
 keycloak:
     auth-server-url: http://localhost:8080/auth

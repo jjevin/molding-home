@@ -70,7 +70,7 @@ public class AssignmentService {
     public List<Assignment> getAssignmentsByClient(Long clientId) throws TimeoutException {
 		logger.debug("getAssignmentsByClient Correlation id: {}",
 				UserContextHolder.getContext().getCorrelationId());
-		randomlyRunLong();
+		// randomlyRunLong();
 		return assignmentRepository.findByClientId(clientId);
     }
 

@@ -31,9 +31,7 @@ public class AssignmentController {
 
     @RequestMapping(value="/client/{clientId}", method = RequestMethod.GET)
     public ResponseEntity<List<Assignment>> getAssignmentsByClient(@PathVariable("clientId") long clientId) throws TimeoutException {
-       
         return ResponseEntity.ok(assignmentService.getAssignmentsByClient(clientId));
-
     }
 
     @PutMapping
