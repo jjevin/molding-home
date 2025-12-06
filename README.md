@@ -26,13 +26,6 @@ docker compose up
 We are using automated mapping of routes, so it might take a while for all mappings to be created.
 Check the "Get Routes" test in postman to confirm mappings are created.
 
-## User Registration
-
-To register a user, visit [this page](http://keycloak:8080/realms/molding/account).
-
-- This is necessary, since importing / exporting users is not supported in the latest version of keycloak (to my knowledge).
-- Create a user with username "molding-user" with the password "pass" for default endpoint testing.
-
 ## Endpoint Testing
 
 This parent directory has Postman tests for each service. 
